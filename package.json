@@ -1,0 +1,11 @@
+{
+  "name": "ecomm-sniffer",
+  "private": true,
+  "workspaces": ["apps/web", "workers"],
+  "scripts": {
+    "dev": "npm run dev --workspace=apps/web",
+    "dev:workers": "npm run dev --workspace=workers",
+    "build": "npm run build --workspace=apps/web",
+    "build:workers": "npm run build --workspace=workers"
+  }
+}
