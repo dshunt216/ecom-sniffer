@@ -46,6 +46,7 @@ export const redditAdapter: SourceAdapter = {
       }
 
       const data: any = await res.json();
+      console.log(`    [Reddit] API returned ${data?.data?.children?.length || 0} raw posts from r/${subreddit}`);
       const posts: RawPost[] = data.data.children.map((child: any) => {
         const post = child.data;
         return {
@@ -65,8 +66,8 @@ export const redditAdapter: SourceAdapter = {
         };
       });
 
-      // Filter: only posts from the last 24 hours
-      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+      // Filter: only posts from the last 48 hours (generous window for timezone safety)
+      const oneDayAgo = Date.now() - 48 * 60 * 60 * 1000;
       return posts.filter(
         (p) => p.published_at && new Date(p.published_at).getTime() > oneDayAgo
       );
