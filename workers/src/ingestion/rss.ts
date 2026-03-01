@@ -24,7 +24,8 @@ export const rssAdapter: SourceAdapter = {
 
     try {
       const feed = await parser.parseURL(feedUrl);
-      const oneDayAgo = Date.now() - 24 * 60 * 60 * 1000;
+      console.log(`    [RSS] Feed returned ${feed.items?.length || 0} items from ${feedUrl}`);
+      const sevenDaysAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
       return (feed.items || [])
         .map((item) => {
@@ -42,9 +43,9 @@ export const rssAdapter: SourceAdapter = {
           } as RawPost;
         })
         .filter((post) => {
-          // Only posts from the last 24 hours
+          // Only posts from the last 7 days
           if (!post.published_at) return true; // Keep undated posts
-          return new Date(post.published_at).getTime() > oneDayAgo;
+          return new Date(post.published_at).getTime() > sevenDaysAgo;
         });
     } catch (err: any) {
       lastError = err.message || "Unknown RSS error";
